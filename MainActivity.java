@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             if (msg.what==MSG_CODE)//收到语音识别完成的消息
             {
 
-                afterRecognizeVoice();
+                //afterRecognizeVoice();
                 afterRecognize();
             }
             if (msg.what==DATA_CODE)//收到灯状态识别完的消息
