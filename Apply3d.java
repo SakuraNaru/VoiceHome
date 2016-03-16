@@ -60,7 +60,7 @@ public class Apply3d {
     }
     public void DeeperImage(int level)
     {
-
+        mImageView2.setImageAlpha(1);
         switch (level)
         {
             case 0:
