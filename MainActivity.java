@@ -34,15 +34,19 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private ImageView light_one_before;
     private ImageView light_one_after;
+    private ImageView light_one_bright;
 
     private ImageView light_two_before;
     private ImageView light_two_after;
+    private ImageView light_two_bright;
 
     private ImageView curtain_one_before;
     private ImageView curtain_one_after;
+    private ImageView curtain_one_bright;
 
     private ImageView curtain_two_before;
     private ImageView curtain_two_after;
+    private ImageView curtain_two_bright;
 
     private TextView talk;
     private Apply3d mApply1;
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     private String[] strNames;
     private String[] strData;
     private int level;
+    private int deep=0;
+    private int state=0;
 
     private Handler mHandler=new Handler()
     {
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             if (msg.what==MSG_CODE)//收到语音识别完成的消息
             {
                 //change local code
-                afterRecognizeVoice();
+                //afterRecognizeVoice();
                 afterRecognize();
             }
             if (msg.what==DATA_CODE)//收到灯状态识别完的消息
@@ -181,26 +187,30 @@ public class MainActivity extends AppCompatActivity {
 
         light_one_before=(ImageView)findViewById(R.id.light_one_before);
         light_one_after=(ImageView)findViewById(R.id.light_one_after);
+        light_one_bright=(ImageView)findViewById(R.id.light_one_bright);
         mContainer1=findViewById(R.id.continer_light_one);
 
         light_two_before=(ImageView)findViewById(R.id.light_two_before);
         light_two_after=(ImageView)findViewById(R.id.light_two_after);
+        light_two_bright=(ImageView)findViewById(R.id.light_two_bright);
         mContainer2=findViewById(R.id.continer_light_one);
 
         curtain_one_before=(ImageView)findViewById(R.id.curtain_one_before);
         curtain_one_after=(ImageView)findViewById(R.id.curtain_one_after);
+        curtain_one_bright=(ImageView)findViewById(R.id.curtain_one_bright);
         mContainer3=findViewById(R.id.continer_light_one);
 
         curtain_two_before=(ImageView)findViewById(R.id.curtain_two_before);
         curtain_two_after=(ImageView)findViewById(R.id.curtain_two_after);
+        curtain_two_bright=(ImageView)findViewById(R.id.curtain_two_bright);
         mContainer4=findViewById(R.id.continer_light_one);
 
         talk=(TextView)findViewById(R.id.talk);
         //mStartAnimView = mImageView1;
-        mApply1=new Apply3d(mContainer1,light_one_before,light_one_after);
-        mApply2=new Apply3d(mContainer2,light_two_before,light_two_after);
-        mApply3=new Apply3d(mContainer3,curtain_one_before,curtain_one_after);
-        mApply4=new Apply3d(mContainer4,curtain_two_before,curtain_two_after);
+        mApply1=new Apply3d(mContainer1,light_one_before,light_one_after,light_one_bright);
+        mApply2=new Apply3d(mContainer2,light_two_before,light_two_after,light_two_bright);
+        mApply3=new Apply3d(mContainer3,curtain_one_before,curtain_one_after,curtain_one_bright);
+        mApply4=new Apply3d(mContainer4,curtain_two_before,curtain_two_after,curtain_two_bright);
 
 
         //light_two_after.setBackgroundColor(Color.rgb(255,255,255));
@@ -214,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.voice).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+/*
                 //new OperationLight().mOpen(listAddr[1][1]);
                 //new ReceiveUdp(mHandler);
                 //new OperationLight().mOff(listAddr[1][1]);
@@ -234,8 +244,25 @@ public class MainActivity extends AppCompatActivity {
                         mVoiceRecognizer.setIfFinish();
                         // afterRecognize();
                     }
-                }.start();
-
+                }.start();*/
+/*
+                if (deep<10)
+                    deep++;
+                refreshUi(1, 3, deep);
+*/
+                refreshUi(1,1,0);
+            }
+        });
+        findViewById(R.id.deep).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+/*
+                if (deep>0)
+                    deep--;
+                refreshUi(1,2,deep);
+*/
+                //Log.v("DEEP",deep+"");
+                refreshUi(1,0,10);
             }
         });
         /*findViewById(R.id.receive).setOnClickListener(new View.OnClickListener() {
@@ -250,81 +277,162 @@ public class MainActivity extends AppCompatActivity {
     private void afterRecognize()
     {
         talk.setText(mResult);//关灯状态 可以开灯和调亮
-        if (!mApply1.getmIfOn())
+        if (test1.equals(mResult))
+            mApply1.applyRotation(light_one_before, 0, 90);
+        if (test2.equals(mResult))
+            mApply1.applyRotation(light_one_before, 0, 90);
+    }
+    private void refreshUi(int num,int type,int now)//num为操作设备的编号,type为操作类型  0关 1开 2调暗 3调亮
+    {                                               //now为设备当前状态 0关---10最亮
+        if (now==0)
         {
-            if (test1.equals(mResult))
+            if (type==1)
             {
-                mApply1.applyRotation(light_one_before, 0, 90);
-                mApply1.setmIfOn(true);
-                mApply2.applyRotation(light_two_before, 0, 90);
-
+                switch (num)
+                {
+                    case 1:
+                        mApply1.applyRotation(light_one_before, 0, 90);  //打开1号设备
+                        break;
+                    case 2:
+                        mApply2.applyRotation(light_two_before, 0, 90);  //打开2号设备
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
             }
-            if (test_up.equals(mResult))
+            else if (type==3)
             {
-                mApply1.applyRotation(light_one_before, 0, 90);
-                mApply1.setmIfOn(true);
-                mApply2.applyRotation(light_two_before, 0, 90);
-                mApply2.DeeperImage(level);
-
+                switch (num)
+                {
+                    case 1:
+                        mApply1.applyRotation(light_one_before, 0, 90);  //打开1号设备
+                        mApply1.DeeperImage(now);
+                        break;
+                    case 2:
+                        mApply2.applyRotation(light_two_before, 0, 90);  //打开2号设备
+                        mApply2.DeeperImage(now);
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
             }
-            if (test_down.equals(mResult))
+            else
             {
                 Toast.makeText(this,"灯已经关了",Toast.LENGTH_SHORT).show();
             }
         }
-        else //开灯状态 可以关灯和调暗
+        else if (now==10)
         {
-            if (test2.equals(mResult))
+            if (type==0)
             {
-                mApply1.applyRotation(light_one_after, 0, 90);
-                mApply1.setmIfOn(false);
-                mApply2.applyRotation(light_two_after, 0, 90);
-
-            }
-            if (test_up.equals(mResult))
-            {
-                if (level>10)
+                switch (num)
                 {
-                    Toast.makeText(this,"灯已经是最亮的了",Toast.LENGTH_SHORT).show();
+                    case 1:
+                        mApply1.applyRotation(light_one_after, 0, 90);  //关闭1号设备
+                        break;
+                    case 2:
+                        mApply2.applyRotation(light_two_after, 0, 90);  //关闭2号设备
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
                 }
-                else
-                    mApply2.DeeperImage(level);
             }
-            if (test_down.equals(mResult))
+            else if (type==2)
             {
-                if (level<0)
+                switch (num)
                 {
-                    Toast.makeText(this,"灯已经关了",Toast.LENGTH_SHORT).show();
-                    mApply1.setmIfOn(false);
-                    mApply2.applyRotation(light_two_after,0, 90);
+                    case 1:
+                        mApply1.DeeperImage(now); //调暗1号设备
+                        break;
+                    case 2:
+                        mApply1.DeeperImage(now); //调暗2号设备
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
                 }
-                else
-                    mApply2.DeeperImage(level);
             }
-
-        }
-        if (!mApply3.getmIfOn())//关闭窗帘状态
-        {
-            if (test3.equals(mResult))
+            else
             {
-                mApply3.applyRotation(curtain_one_before,0, 90);
-                mApply3.setmIfOn(true);
+                Toast.makeText(this,"灯已经是最亮的了",Toast.LENGTH_SHORT).show();
             }
-
-
         }
-        else //拉开窗帘状态
+        else
         {
-            if (test4.equals(mResult))
+            if (type==0)
             {
-                mApply3.applyRotation(curtain_one_after,0, 90);
-                mApply3.setmIfOn(false);
+                switch (num)
+                {
+                    case 1:
+                        mApply1.applyRotation(light_one_after, 0, 90);  //关闭1号设备
+                        break;
+                    case 2:
+                        mApply2.applyRotation(light_two_after, 0, 90);  //关闭1号设备
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
             }
-
+            else if (type==2)
+            {
+                switch (num)
+                {
+                    case 1:
+                        mApply1.DeeperImage(now); //调暗1号设备
+                        break;
+                    case 2:
+                        mApply2.DeeperImage(now); //调暗1号设备
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (type==3)
+            {
+                switch (num)
+                {
+                    case 1:
+                        mApply1.DeeperImage(now); //调亮1号设备
+                        break;
+                    case 2:
+                        mApply2.DeeperImage(now); //调亮2号设备
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                Toast.makeText(this,"灯已经打开了",Toast.LENGTH_SHORT).show();
+            }
         }
-
-
-
     }
     private void afterRecognizeVoice()
     {

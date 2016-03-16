@@ -19,10 +19,10 @@ public class Apply3d {
     private int mIndex = 0;
     private ImageView mImageView1;
     private ImageView mImageView2;
+    private ImageView mImageView3;
     private ImageView mStartAnimView = null;
     private View mContainer = null;
     private boolean mIfOn;
-    private int deep=0;
 
     public void setmIfOn(boolean a)
     {
@@ -32,7 +32,7 @@ public class Apply3d {
     {
         return mIfOn;
     }
-    public Apply3d(View container,ImageView imageView1,ImageView imageView2)
+    public Apply3d(View container,ImageView imageView1,ImageView imageView2,ImageView imageView3)
     {
         mIfOn=false;
         mStartAnimView=imageView1;
@@ -43,6 +43,7 @@ public class Apply3d {
         mDepthZ = 300;
         mImageView1=imageView1;
         mImageView2=imageView2;
+        mImageView3=imageView3;
 
     }
     public void applyRotation(ImageView startImage, float startAngle, float toAngle)
@@ -58,43 +59,43 @@ public class Apply3d {
         rotation.setAnimationListener(new DisplayNextView());
         mStartAnimView.startAnimation(rotation);
     }
-    public void DeeperImage(int level)
+    public void DeeperImage(int level)//level 越高越亮 alpha数值越小
     {
-        mImageView2.setImageAlpha(1);
+        mImageView3.setVisibility(View.VISIBLE);
         switch (level)
         {
             case 0:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"));
+                mImageView3.setImageAlpha(200);
                 break;
             case 1:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFFAFA"));
+                mImageView3.setImageAlpha(180);
                 break;
             case 2:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFEFD5"));
+                mImageView3.setImageAlpha(160);
                 break;
             case 3:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFE4E1"));
+                mImageView3.setImageAlpha(140);
                 break;
             case 4:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFC1C1"));
+                mImageView3.setImageAlpha(120);
                 break;
             case 5:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFB90F"));
+                mImageView3.setImageAlpha(100);
                 break;
             case 6:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FFA54F"));
+                mImageView3.setImageAlpha(80);
                 break;
             case 7:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FF8C00"));
+                mImageView3.setImageAlpha(60);
                 break;
             case 8:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FF4500"));
+                mImageView3.setImageAlpha(40);
                 break;
             case 9:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FF3030"));
+                mImageView3.setImageAlpha(20);
                 break;
             case 10:
-                mImageView2.setBackgroundColor(android.graphics.Color.parseColor("#FF0000"));
+                mImageView3.setImageAlpha(0);
                 break;
             default:
                 break;
